@@ -38,10 +38,10 @@ class MainFragment : Fragment() {
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             when (state?.state) {
                 PlaybackStateCompat.STATE_PLAYING -> {
-                    binding.imageButtonMusicPlayAndStop.setImageResource(R.drawable.exo_icon_pause)
+                    binding.imageButtonMusicPlayAndStop.setImageResource(android.R.drawable.ic_media_pause)
                 }
                 else -> {
-                    binding.imageButtonMusicPlayAndStop.setImageResource(R.drawable.exo_icon_play)
+                    binding.imageButtonMusicPlayAndStop.setImageResource(android.R.drawable.ic_media_play)
                 }
             }
         }
