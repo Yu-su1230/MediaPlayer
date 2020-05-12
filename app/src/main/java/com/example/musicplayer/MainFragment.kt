@@ -27,12 +27,9 @@ class MainFragment : Fragment() {
     private val controllerCallback = object : MediaControllerCompat.Callback() {
         override fun onMetadataChanged(metadata: MediaMetadataCompat?) {
             // 曲情報の変化に合わせてUI更新
-//            binding.textViewMusicTitle.text = metadata?.getString(MediaMetadataCompat.METADATA_KEY_TITLE)
-//            binding.textViewArtistName.text = metadata?.getString(MediaMetadataCompat.METADATA_KEY_ARTIST)
-//            binding.imageViewJacket.setImageBitmap(metadata?.getBitmap(MediaMetadataCompat.METADATA_KEY_ART))
             binding.viewModel?.title?.value = metadata?.getString(MediaMetadataCompat.METADATA_KEY_TITLE)
             binding.viewModel?.artist?.value = metadata?.getString(MediaMetadataCompat.METADATA_KEY_ARTIST)
-
+            binding.viewModel?.albumArt?.value = metadata?.getBitmap(MediaMetadataCompat.METADATA_KEY_ART)
         }
 
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {

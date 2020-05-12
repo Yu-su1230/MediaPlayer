@@ -22,7 +22,8 @@
             android:contentDescription="@string/missing_image"
             android:src="@drawable/image"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:setBitmapImage="@{viewModel.albumArt}"/>
 
         <TextView
             android:id="@+id/textView_musicTitle"
