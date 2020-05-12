@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.musicplayer.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <ImageView
+            android:id="@+id/imageView_jacket"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/missing_image"
+            android:src="@drawable/image"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_musicTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="@{viewModel.title}"
+            android:textAlignment="center"
+            android:textSize="25dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageView_jacket" />
+
+        <TextView
+            android:id="@+id/textView_artistName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="@{viewModel.artist}"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView_musicTitle" />
+
+
+        <SeekBar
+            android:id="@+id/musicSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_artistName" />
+
+        <TextView
+            android:id="@+id/textView_CurrentTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/seek_bar_current_time"
+            app:layout_constraintLeft_toLeftOf="@+id/musicSeekBar"
+            app:layout_constraintTop_toBottomOf="@+id/musicSeekBar" />
+
+        <TextView
+            android:id="@+id/textView_EndTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/seek_bar_end_time"
+            app:layout_constraintRight_toRightOf="@+id/musicSeekBar"
+            app:layout_constraintTop_toBottomOf="@+id/musicSeekBar" />
+
+        <ImageButton
+            android:id="@+id/imageButton_musicPlayAndStop"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@null"
+            android:contentDescription="@string/missing_image"
+            android:scaleType="fitXY"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_CurrentTime"
+            app:srcCompat="@android:drawable/ic_media_pause" />
+
+        <ImageButton
+            android:id="@+id/imageButton_musicPrevious"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="20dp"
+            android:background="@null"
+            android:contentDescription="@string/missing_image"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButton_musicPlayAndStop"
+            app:layout_constraintRight_toLeftOf="@+id/imageButton_musicPlayAndStop"
+            app:layout_constraintTop_toTopOf="@+id/imageButton_musicPlayAndStop"
+            app:srcCompat="@android:drawable/ic_media_rew" />
+
+        <ImageButton
+            android:id="@+id/imageButton_musicNext"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="20dp"
+            android:background="@null"
+            android:contentDescription="@string/missing_image"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButton_musicPlayAndStop"
+            app:layout_constraintLeft_toRightOf="@+id/imageButton_musicPlayAndStop"
+            app:layout_constraintTop_toTopOf="@+id/imageButton_musicPlayAndStop"
+            app:srcCompat="@android:drawable/ic_media_ff" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
