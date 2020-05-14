@@ -143,7 +143,7 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
             if (mediaSession.controller.playbackState.state == PlaybackStateCompat.STATE_PLAYING) {
                 NotificationCompat.Action(
                     R.drawable.exo_notification_pause,
-                    "aaaaa",//getString(R.string.action_pause),
+                    "pause",//getString(R.string.action_pause),
                     MediaButtonReceiver.buildMediaButtonPendingIntent(
                         baseContext,
                         PlaybackStateCompat.ACTION_PAUSE
@@ -152,7 +152,7 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
             } else {
                 NotificationCompat.Action(
                     R.drawable.exo_notification_play,
-                    "aaaaa",//getString(R.string.action_play),
+                    "play",//getString(R.string.action_play),
                     MediaButtonReceiver.buildMediaButtonPendingIntent(
                         baseContext,
                         PlaybackStateCompat.ACTION_PLAY
@@ -165,14 +165,16 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
-        val manager: NotificationManager = getSystemService(NotificationManager::class.java) as NotificationManager
+        val manager: NotificationManager =
+            getSystemService(NotificationManager::class.java) as NotificationManager
         if (manager.getNotificationChannel("aaaaa"/*NotificationConst.CHANNEL_MUSIC*/) == null) {
             val channel = NotificationChannel(
-                "aaaaa",//NotificationConst.CHANNEL_MUSIC,
-                "aaaaa",//getString(R.string.channel_music_title),
+                "channel_music",//NotificationConst.CHANNEL_MUSIC,
+                "channel_music_title",//getString(R.string.channel_music_title),
                 NotificationManager.IMPORTANCE_LOW
             ).apply {
-                description = "aaaaa"//getString(R.string.channel_music_description)
+                description =
+                    "channel_music_description"//getString(R.string.channel_music_description)
             }
             manager.createNotificationChannel(channel)
         }
@@ -197,17 +199,17 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
         }
 
         override fun onPlay() {
-            notificationManager.notify(1,buildNotification())
             setNewState(PlaybackStateCompat.STATE_PLAYING)
             mediaSession.isActive = true
             exoPlayer.playWhenReady = true
             startService(Intent(baseContext, MediaPlaybackService::class.java))
+            notificationManager.notify(1, buildNotification())
         }
 
         override fun onPause() {
-            notificationManager.notify(1,buildNotification())
             setNewState(PlaybackStateCompat.STATE_PAUSED)
             exoPlayer.playWhenReady = false
+            notificationManager.notify(1, buildNotification())
         }
 
         override fun onStop() {
