@@ -203,10 +203,12 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
             mediaSession.isActive = true
             exoPlayer.playWhenReady = true
             startService(Intent(baseContext, MediaPlaybackService::class.java))
+            startForeground(1,buildNotification())
             notificationManager.notify(1, buildNotification())
         }
 
         override fun onPause() {
+            stopForeground(false)
             setNewState(PlaybackStateCompat.STATE_PAUSED)
             exoPlayer.playWhenReady = false
             notificationManager.notify(1, buildNotification())
