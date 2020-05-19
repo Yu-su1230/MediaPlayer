@@ -15,6 +15,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.media.MediaBrowserServiceCompat
 import androidx.media.session.MediaButtonReceiver
 import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.upstream.DataSpec
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
@@ -219,6 +220,18 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
             exoPlayer.stop()
             mediaSession.isActive = false
             stopSelf()
+        }
+
+        override fun onSetRepeatMode(repeatMode: Int) {
+            mediaSession.setRepeatMode(repeatMode)
+            when (repeatMode) {
+                PlaybackStateCompat.REPEAT_MODE_ONE -> {
+                    exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
+                }
+                else -> {
+                    exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
+                }
+            }
         }
 
     }

@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.musicplayer.databinding.FragmentNowplayingBinding
+import com.google.android.exoplayer2.Player
 
 class MainFragment : Fragment() {
 
@@ -35,6 +36,21 @@ class MainFragment : Fragment() {
                 }
                 else -> {
                     binding.imageButtonMusicPlayAndStop.setImageResource(android.R.drawable.ic_media_play)
+                }
+            }
+        }
+
+        override fun onRepeatModeChanged(repeatMode: Int) {
+            when (repeatMode) {
+                PlaybackStateCompat.REPEAT_MODE_ONE -> {
+                    binding.imageButtonLoop.apply {
+                        setImageResource(R.drawable.exo_controls_repeat_one)
+                    }
+                }
+                else -> {
+                    binding.imageButtonLoop.apply {
+                        setImageResource(R.drawable.exo_controls_repeat_off)
+                    }
                 }
             }
         }
@@ -103,6 +119,16 @@ class MainFragment : Fragment() {
                     mediaController.transportControls.pause()
                 } else {
                     mediaController.transportControls.play()
+                }
+            }
+        }
+        binding.imageButtonLoop.apply {
+            setOnClickListener {
+                val repeatMode = mediaController.repeatMode
+                if (repeatMode == Player.REPEAT_MODE_ONE) {
+                    mediaController.transportControls.setRepeatMode(PlaybackStateCompat.REPEAT_MODE_NONE)
+                } else {
+                    mediaController.transportControls.setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ONE)
                 }
             }
         }

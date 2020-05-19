@@ -114,5 +114,18 @@
             app:layout_constraintTop_toTopOf="@+id/imageButton_musicPlayAndStop"
             app:srcCompat="@android:drawable/ic_media_ff" />
 
+        <ImageButton
+            android:id="@+id/imageButton_loop"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="100dp"
+            android:background="@null"
+            android:contentDescription="@string/missing_image"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButton_musicPlayAndStop"
+            app:layout_constraintLeft_toRightOf="@+id/imageButton_musicPlayAndStop"
+            app:layout_constraintTop_toTopOf="@+id/imageButton_musicPlayAndStop"
+            app:srcCompat="@drawable/exo_controls_repeat_one" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
