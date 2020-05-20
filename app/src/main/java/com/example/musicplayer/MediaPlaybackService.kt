@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Intent
+import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
@@ -12,6 +13,9 @@ import android.support.v4.media.session.PlaybackStateCompat
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.media.AudioAttributesCompat
+import androidx.media.AudioFocusRequestCompat
+import androidx.media.AudioManagerCompat
 import androidx.media.MediaBrowserServiceCompat
 import androidx.media.session.MediaButtonReceiver
 import com.google.android.exoplayer2.ExoPlayer
@@ -21,6 +25,7 @@ import com.google.android.exoplayer2.upstream.DataSpec
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.RawResourceDataSource
 import com.google.android.exoplayer2.util.Util.getUserAgent
+import timber.log.Timber
 import androidx.media.app.NotificationCompat as MediaNotificationCompat
 
 class MediaPlaybackService : MediaBrowserServiceCompat() {
@@ -37,6 +42,30 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
     private lateinit var notificationManager: NotificationManagerCompat
 
     private lateinit var rawDataSource: RawResourceDataSource
+
+    private lateinit var audioManager: AudioManager
+
+    private val audioFocusRequest = AudioFocusRequestCompat.Builder(AudioManagerCompat.AUDIOFOCUS_GAIN)
+        .setAudioAttributes(
+            AudioAttributesCompat.Builder()
+                .setUsage(AudioAttributesCompat.USAGE_MEDIA)
+                .setContentType(AudioAttributesCompat.CONTENT_TYPE_MUSIC)
+                .build()
+        )
+        .setOnAudioFocusChangeListener { focusChange ->
+            when (focusChange) {
+                AudioManager.AUDIOFOCUS_GAIN -> {
+                    mediaSession.controller.transportControls.play()
+                }
+                AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
+                    mediaSession.controller.transportControls.pause()
+                }
+                AudioManager.AUDIOFOCUS_LOSS -> {
+                    mediaSession.controller.transportControls.stop()
+                }
+            }
+        }
+        .build()
 
     override fun onCreate() {
         super.onCreate()
@@ -56,6 +85,8 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
                 setSessionToken(sessionToken)
             }
         notificationManager = NotificationManagerCompat.from(baseContext)
+
+        audioManager = getSystemService(AudioManager::class.java) as AudioManager
     }
 
     override fun onGetRoot(
@@ -202,20 +233,23 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
         override fun onPlay() {
             setNewState(PlaybackStateCompat.STATE_PLAYING)
             mediaSession.isActive = true
-            exoPlayer.playWhenReady = true
+            if (gainAudioFocus()) {
+                exoPlayer.playWhenReady = true
+            }
             startService(Intent(baseContext, MediaPlaybackService::class.java))
-            startForeground(1,buildNotification())
+            //startForeground(1,buildNotification())
             notificationManager.notify(1, buildNotification())
         }
 
         override fun onPause() {
-            stopForeground(false)
+            //stopForeground(false)
             setNewState(PlaybackStateCompat.STATE_PAUSED)
             exoPlayer.playWhenReady = false
             notificationManager.notify(1, buildNotification())
         }
 
         override fun onStop() {
+            AudioManagerCompat.abandonAudioFocusRequest(audioManager, audioFocusRequest)
             setNewState(PlaybackStateCompat.STATE_STOPPED)
             exoPlayer.stop()
             mediaSession.isActive = false
@@ -235,4 +269,17 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
         }
 
     }
+
+    private fun gainAudioFocus(): Boolean {
+        return when (AudioManagerCompat.requestAudioFocus(audioManager, audioFocusRequest)) {
+            AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> true
+            AudioManager.AUDIOFOCUS_REQUEST_FAILED -> {
+                Timber.w("requestAudioFocus failed.")
+                false
+            }
+            else -> false
+        }
+    }
+
+
 }
