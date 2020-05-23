@@ -3,7 +3,10 @@ package com.example.musicplayer
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
@@ -44,6 +47,14 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
     private lateinit var rawDataSource: RawResourceDataSource
 
     private lateinit var audioManager: AudioManager
+
+    private val audioNoisyFilter = IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
+
+    private val audioNoisyReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            mediaSession.controller.transportControls.pause()
+        }
+    }
 
     private val audioFocusRequest = AudioFocusRequestCompat.Builder(AudioManagerCompat.AUDIOFOCUS_GAIN)
         .setAudioAttributes(
@@ -234,6 +245,7 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
             setNewState(PlaybackStateCompat.STATE_PLAYING)
             mediaSession.isActive = true
             if (gainAudioFocus()) {
+                registerReceiver(audioNoisyReceiver, audioNoisyFilter)
                 exoPlayer.playWhenReady = true
             }
             startService(Intent(baseContext, MediaPlaybackService::class.java))
@@ -243,12 +255,14 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
 
         override fun onPause() {
             //stopForeground(false)
+            unregisterReceiver(audioNoisyReceiver)
             setNewState(PlaybackStateCompat.STATE_PAUSED)
             exoPlayer.playWhenReady = false
             notificationManager.notify(1, buildNotification())
         }
 
         override fun onStop() {
+            unregisterReceiver(audioNoisyReceiver)
             AudioManagerCompat.abandonAudioFocusRequest(audioManager, audioFocusRequest)
             setNewState(PlaybackStateCompat.STATE_STOPPED)
             exoPlayer.stop()
