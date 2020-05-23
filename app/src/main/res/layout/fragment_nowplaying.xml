@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.musicplayer.MainViewModel" />
@@ -19,11 +20,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
+            android:background="@color/colorGray"
             android:contentDescription="@string/missing_image"
-            android:src="@drawable/image"
+            android:src="@drawable/img_now_playing_album_art"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:setBitmapImage="@{viewModel.albumArt}"/>
+            app:setBitmapImage="@{viewModel.albumArt}" />
 
         <TextView
             android:id="@+id/textView_musicTitle"
@@ -57,23 +59,23 @@
             android:layout_margin="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_artistName" />
+            app:layout_constraintTop_toBottomOf="@id/textView_artistName" />
 
         <TextView
             android:id="@+id/textView_CurrentTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/seek_bar_current_time"
-            app:layout_constraintLeft_toLeftOf="@+id/musicSeekBar"
-            app:layout_constraintTop_toBottomOf="@+id/musicSeekBar" />
+            app:layout_constraintLeft_toLeftOf="@id/musicSeekBar"
+            app:layout_constraintTop_toBottomOf="@id/musicSeekBar" />
 
         <TextView
             android:id="@+id/textView_EndTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/seek_bar_end_time"
-            app:layout_constraintRight_toRightOf="@+id/musicSeekBar"
-            app:layout_constraintTop_toBottomOf="@+id/musicSeekBar" />
+            app:layout_constraintRight_toRightOf="@id/musicSeekBar"
+            app:layout_constraintTop_toBottomOf="@id/musicSeekBar" />
 
         <ImageButton
             android:id="@+id/imageButton_musicPlayAndStop"
@@ -85,8 +87,8 @@
             android:scaleType="fitXY"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_CurrentTime"
-            app:srcCompat="@android:drawable/ic_media_pause" />
+            app:layout_constraintTop_toBottomOf="@id/textView_CurrentTime"
+            app:srcCompat="@drawable/ic_pause_black_36dp" />
 
         <ImageButton
             android:id="@+id/imageButton_musicPrevious"
@@ -96,10 +98,10 @@
             android:background="@null"
             android:contentDescription="@string/missing_image"
             android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="@+id/imageButton_musicPlayAndStop"
-            app:layout_constraintRight_toLeftOf="@+id/imageButton_musicPlayAndStop"
-            app:layout_constraintTop_toTopOf="@+id/imageButton_musicPlayAndStop"
-            app:srcCompat="@android:drawable/ic_media_rew" />
+            app:layout_constraintBottom_toBottomOf="@id/imageButton_musicPlayAndStop"
+            app:layout_constraintRight_toLeftOf="@id/imageButton_musicPlayAndStop"
+            app:layout_constraintTop_toTopOf="@id/imageButton_musicPlayAndStop"
+            app:srcCompat="@drawable/ic_skip_previous_black_36dp" />
 
         <ImageButton
             android:id="@+id/imageButton_musicNext"
@@ -109,10 +111,10 @@
             android:background="@null"
             android:contentDescription="@string/missing_image"
             android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="@+id/imageButton_musicPlayAndStop"
-            app:layout_constraintLeft_toRightOf="@+id/imageButton_musicPlayAndStop"
-            app:layout_constraintTop_toTopOf="@+id/imageButton_musicPlayAndStop"
-            app:srcCompat="@android:drawable/ic_media_ff" />
+            app:layout_constraintBottom_toBottomOf="@id/imageButton_musicPlayAndStop"
+            app:layout_constraintLeft_toRightOf="@id/imageButton_musicPlayAndStop"
+            app:layout_constraintTop_toTopOf="@id/imageButton_musicPlayAndStop"
+            app:srcCompat="@drawable/ic_skip_next_black_36dp" />
 
         <ImageButton
             android:id="@+id/imageButton_loop"
@@ -121,10 +123,10 @@
             android:layout_marginStart="100dp"
             android:background="@null"
             android:contentDescription="@string/missing_image"
-            app:layout_constraintBottom_toBottomOf="@+id/imageButton_musicPlayAndStop"
-            app:layout_constraintLeft_toRightOf="@+id/imageButton_musicPlayAndStop"
-            app:layout_constraintTop_toTopOf="@+id/imageButton_musicPlayAndStop"
-            app:srcCompat="@drawable/exo_controls_repeat_one" />
+            app:layout_constraintBottom_toBottomOf="@id/imageButton_musicPlayAndStop"
+            app:layout_constraintLeft_toRightOf="@id/imageButton_musicPlayAndStop"
+            app:layout_constraintTop_toTopOf="@id/imageButton_musicPlayAndStop"
+            app:srcCompat="@drawable/ic_repeat_off_black_36dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

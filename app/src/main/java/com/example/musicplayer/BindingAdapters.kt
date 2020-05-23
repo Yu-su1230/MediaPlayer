@@ -12,7 +12,7 @@ object BindingAdapters {
         if (bitmapImage != null) {
             setImageBitmap(bitmapImage)
         } else {
-            setImageResource(R.drawable.image)
+            setImageResource(R.drawable.img_now_playing_album_art)
         }
     }
 }

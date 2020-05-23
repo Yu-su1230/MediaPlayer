@@ -32,10 +32,10 @@ class MainFragment : Fragment() {
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             when (state?.state) {
                 PlaybackStateCompat.STATE_PLAYING -> {
-                    binding.imageButtonMusicPlayAndStop.setImageResource(android.R.drawable.ic_media_pause)
+                    binding.imageButtonMusicPlayAndStop.setImageResource(R.drawable.ic_pause_black_36dp)
                 }
                 else -> {
-                    binding.imageButtonMusicPlayAndStop.setImageResource(android.R.drawable.ic_media_play)
+                    binding.imageButtonMusicPlayAndStop.setImageResource(R.drawable.ic_play_arrow_black_36dp)
                 }
             }
         }
@@ -44,12 +44,12 @@ class MainFragment : Fragment() {
             when (repeatMode) {
                 PlaybackStateCompat.REPEAT_MODE_ONE -> {
                     binding.imageButtonLoop.apply {
-                        setImageResource(R.drawable.exo_controls_repeat_one)
+                        setImageResource(R.drawable.ic_repeat_one_black_36dp)
                     }
                 }
                 else -> {
                     binding.imageButtonLoop.apply {
-                        setImageResource(R.drawable.exo_controls_repeat_off)
+                        setImageResource(R.drawable.ic_repeat_off_black_36dp)
                     }
                 }
             }
