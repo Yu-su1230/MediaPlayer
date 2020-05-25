@@ -85,7 +85,7 @@ class MainFragment : Fragment() {
             ComponentName(requireContext(), MediaPlaybackService::class.java),
             connectionCallback,
             null
-        )
+        ).apply { connect() }
     }
 
     override fun onCreateView(
@@ -97,11 +97,6 @@ class MainFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
         return binding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
-        mediaBrowser.connect()
     }
 
     override fun onStop() {
