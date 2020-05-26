@@ -99,8 +99,8 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         MediaControllerCompat.getMediaController(requireActivity())?.unregisterCallback(controllerCallback)
         mediaBrowser.disconnect()
     }
