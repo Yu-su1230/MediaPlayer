@@ -21,7 +21,7 @@
         <!-- Media Player -->
         <service
             android:name=".MediaPlaybackService"
-            android:exported="false"
+            android:exported="true"
             >
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />
