@@ -5,13 +5,10 @@ import android.content.res.AssetFileDescriptor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
-import android.net.Uri
 import android.support.v4.media.MediaMetadataCompat
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.RawResourceDataSource
 import timber.log.Timber
 
@@ -33,6 +30,8 @@ object MusicLibrary {
                 retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST))
             .putBitmap(MediaMetadataCompat.METADATA_KEY_ART,
                 createArt(retriever))
+            .putLong(MediaMetadataCompat.METADATA_KEY_DURATION,
+                retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION).toLong())
             .build()
     }
 

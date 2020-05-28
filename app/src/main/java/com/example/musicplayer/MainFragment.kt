@@ -24,19 +24,25 @@ class MainFragment : Fragment() {
     private val controllerCallback = object : MediaControllerCompat.Callback() {
         override fun onMetadataChanged(metadata: MediaMetadataCompat?) {
             // 曲情報の変化に合わせてUI更新
-            binding.viewModel?.title?.value = metadata?.getString(MediaMetadataCompat.METADATA_KEY_TITLE)
-            binding.viewModel?.artist?.value = metadata?.getString(MediaMetadataCompat.METADATA_KEY_ARTIST)
-            binding.viewModel?.albumArt?.value = metadata?.getBitmap(MediaMetadataCompat.METADATA_KEY_ART)
+            metadata?.let {
+                binding.viewModel?.title?.value = metadata.getString(MediaMetadataCompat.METADATA_KEY_TITLE)
+                binding.viewModel?.artist?.value = metadata.getString(MediaMetadataCompat.METADATA_KEY_ARTIST)
+                binding.viewModel?.albumArt?.value = metadata.getBitmap(MediaMetadataCompat.METADATA_KEY_ART)
+                binding.musicSeekBar.max = metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION).toInt()
+            }
         }
 
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
-            when (state?.state) {
-                PlaybackStateCompat.STATE_PLAYING -> {
-                    binding.imageButtonMusicPlayAndStop.setImageResource(R.drawable.ic_pause_black_36dp)
+            state?.let {
+                when (state.state) {
+                    PlaybackStateCompat.STATE_PLAYING -> {
+                        binding.imageButtonMusicPlayAndStop.setImageResource(R.drawable.ic_pause_black_36dp)
+                    }
+                    else -> {
+                        binding.imageButtonMusicPlayAndStop.setImageResource(R.drawable.ic_play_arrow_black_36dp)
+                    }
                 }
-                else -> {
-                    binding.imageButtonMusicPlayAndStop.setImageResource(R.drawable.ic_play_arrow_black_36dp)
-                }
+                binding.musicSeekBar.progress = state.position.toInt()
             }
         }
 

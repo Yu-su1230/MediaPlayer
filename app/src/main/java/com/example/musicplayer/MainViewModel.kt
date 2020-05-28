@@ -10,4 +10,6 @@ class MainViewModel: ViewModel() {
     val title = MutableLiveData<String>()
 
     val albumArt = MutableLiveData<Bitmap>()
+
+    val seekMax = MutableLiveData<Int>()
 }
