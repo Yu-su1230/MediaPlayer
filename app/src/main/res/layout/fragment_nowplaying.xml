@@ -35,7 +35,7 @@
             android:layout_marginBottom="5dp"
             android:text="@{viewModel.title}"
             android:textAlignment="center"
-            android:textSize="25dp"
+            android:textSize="25sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imageView_jacket" />
 
@@ -47,7 +47,7 @@
             android:layout_marginBottom="5dp"
             android:text="@{viewModel.artist}"
             android:textAlignment="center"
-            android:textSize="15dp"
+            android:textSize="15sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView_musicTitle" />
 
