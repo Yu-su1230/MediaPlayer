@@ -2,6 +2,8 @@ package com.example.musicplayer
 
 import android.content.ComponentName
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
@@ -17,9 +19,13 @@ class MainFragment : Fragment() {
 
     private lateinit var mediaBrowser: MediaBrowserCompat
 
+    private lateinit var mediaController: MediaControllerCompat
+
     private lateinit var binding: FragmentNowplayingBinding
 
-    private val viewModel = MainViewModel()
+    private lateinit var viewModel: MainViewModel
+
+    private val handler = Handler(Looper.getMainLooper())
 
     private val controllerCallback = object : MediaControllerCompat.Callback() {
         override fun onMetadataChanged(metadata: MediaMetadataCompat?) {
@@ -81,6 +87,7 @@ class MainFragment : Fragment() {
             buildTransportControls()
             // 接続後、曲リストを購読する。ここでparentIdを渡す
             mediaBrowser.subscribe(mediaBrowser.root,subscriptionCallback)
+            checkPlaybackPosition()
         }
     }
 
@@ -92,6 +99,7 @@ class MainFragment : Fragment() {
             connectionCallback,
             null
         ).apply { connect() }
+        viewModel = MainViewModel()
     }
 
     override fun onCreateView(
@@ -112,7 +120,7 @@ class MainFragment : Fragment() {
     }
 
     private fun buildTransportControls() {
-        val mediaController = MediaControllerCompat.getMediaController(requireActivity())
+        mediaController = MediaControllerCompat.getMediaController(requireActivity())
         binding.imageButtonMusicPlayAndStop.apply {
             setOnClickListener {
                 val state = mediaController.playbackState.state
@@ -136,4 +144,11 @@ class MainFragment : Fragment() {
         // 操作の監視(サービス接続後なら、ここじゃなくてもOK)
         mediaController.registerCallback(controllerCallback)
     }
+
+    private fun checkPlaybackPosition(): Boolean = handler.postDelayed({
+        val currPosition = mediaController.playbackState.position
+        if (binding.musicSeekBar.progress != currPosition.toInt())
+            binding.musicSeekBar.progress = currPosition.toInt()
+        checkPlaybackPosition()
+    }, 100L)
 }
