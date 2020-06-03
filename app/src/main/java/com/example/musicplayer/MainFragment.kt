@@ -11,6 +11,7 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import com.example.musicplayer.databinding.FragmentNowplayingBinding
 import com.google.android.exoplayer2.Player
@@ -141,6 +142,30 @@ class MainFragment : Fragment() {
                 }
             }
         }
+        binding.musicSeekBar.setOnSeekBarChangeListener(
+            object: SeekBar.OnSeekBarChangeListener{
+                // ツマミをホールドしている時の動作
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    // Do nothing
+                }
+
+                // ツマミがタッチされた時の動作
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                    // Do nothing
+                }
+
+                // ツマミがリリースされた時の動作
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    if (seekBar != null) {
+                        mediaController.transportControls.seekTo(seekBar.progress.toLong())
+                    }
+                }
+            }
+        )
         // 操作の監視(サービス接続後なら、ここじゃなくてもOK)
         mediaController.registerCallback(controllerCallback)
     }
