@@ -271,8 +271,8 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
         }
 
         override fun onSeekTo(pos: Long) {
-            setNewState(mediaState)
             exoPlayer.seekTo(pos)
+            setNewState(mediaState)
         }
 
         override fun onSetRepeatMode(repeatMode: Int) {
