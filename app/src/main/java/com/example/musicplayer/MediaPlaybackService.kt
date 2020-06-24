@@ -24,6 +24,8 @@ import androidx.media.session.MediaButtonReceiver
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.source.ConcatenatingMediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DataSpec
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.RawResourceDataSource
@@ -230,16 +232,32 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
             mediaSession.setMetadata(MusicLibrary.getMetadata(baseContext))
             rawDataSource.open(DataSpec(RawResourceDataSource.buildRawResourceUri(R.raw.fracture_ray)))
 
-            val mediaSource = MusicLibrary.getMediaSource(
+//            val mediaSource = MusicLibrary.getMediaSource(
+//                DefaultDataSourceFactory(
+//                    baseContext,
+//                    getUserAgent(baseContext, "ExoText")
+//                ),
+//                rawDataSource
+//            )
+
+            val firstMediaSource = ProgressiveMediaSource.Factory(
                 DefaultDataSourceFactory(
                     baseContext,
                     getUserAgent(baseContext, "ExoText")
-                ),
-                rawDataSource
-            )
+                )
+            ).createMediaSource(rawDataSource.uri)
 
-            exoPlayer.prepare(mediaSource)
-        }
+            rawDataSource.open(DataSpec(RawResourceDataSource.buildRawResourceUri(R.raw.good_bye_merry_go_round)))
+
+            val secondMediaSource = ProgressiveMediaSource.Factory(
+                DefaultDataSourceFactory(
+                    baseContext,
+                    getUserAgent(baseContext, "ExoText")
+                )
+            ).createMediaSource(rawDataSource.uri)
+
+            exoPlayer.prepare(ConcatenatingMediaSource(secondMediaSource,firstMediaSource))
+    }
 
         override fun onPlay() {
             setNewState(PlaybackStateCompat.STATE_PLAYING)
